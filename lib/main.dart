@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_news_api/Model/artical.dart';
 import 'package:flutter_news_api/service/api_service.dart';
+import 'package:flutter_news_api/widgets/newsCard.dart';
+import 'package:flutter_news_api/widgets/screen1.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,6 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      debugShowCheckedModeBanner: false,
       home: const MyHomePage(),
     );
   }
@@ -53,18 +56,13 @@ class _MyHomePageState extends State<MyHomePage> {
           if(snapshot.hasData){
             return ListView.builder(
                 itemBuilder: (BuildContext context, index){
-                  return Column(
-                    children: [
-                      Card(
-                        elevation: 15,
-                        child: ListTile(
-                          title: Text('${snapshot.data![index].title}'),
-                          subtitle: Text('${snapshot.data![index].description}'),
-                          trailing: Text('${snapshot.data![index].author}'),
-                        ),
-                      ),
-                      Image.network('${snapshot.data![index].urlToImage}')
-                    ],
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push((context), MaterialPageRoute(builder: (context) => Screen1(article: snapshot.data![index])));
+                    },
+                    child: NewsCard(
+                        article: snapshot.data![index]
+                    ),
                   );
                 }
             );
